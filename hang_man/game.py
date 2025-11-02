@@ -1,16 +1,38 @@
 
 def init_state(secret: str, max_tries: int) -> dict:
-    return {'secret': secret, 'display': [], 'guessed': {}, 'guesses_wrong': 0, 'max_tries': max_tries}
+    display = []
+    for i in range(len(secret)):
+        display.append('_')
+    return {'secret': secret, 'display': display, 'guessed': set(), 'wrong_guesses': 0, 'max_tries': max_tries}
 
 def validate_guess(ch: str, guessed: set[str]) -> tuple[bool, str]:
-    pass
+    if len(ch) == 1 and ch not in guessed and ch.isalpha():
+        return True, 'valid input!'
+    elif ch in guessed:
+        return False, 'you already guessed this letter you need to enter a new one!'
+    else:
+        return False, 'invalid input you need to enter a single letter!'
+
 def apply_guess(state: dict, ch: str) -> bool:
-    pass
+    if ch in state['secret']:
+        return True
+    else:
+        return False
+
 def is_won(state: dict) -> bool:
-    pass
+    if state['secret'] == ''.join(state['display']):
+        return True
+    else:
+        return False
+
 def is_lost(state: dict) -> bool:
-    pass
+    if state['wrong_guesses'] >= state['max_tries']:
+        return True
+    else:
+        return False
+
 def render_display(state: dict) -> str:
-    pass
+    return ' '.join(state['display'])
+
 def render_summary(state: dict) -> str:
-    pass
+    return f'the secret word is: {state['secret']}. your guesses are {state['guessed']}'
